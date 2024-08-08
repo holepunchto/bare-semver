@@ -5,7 +5,13 @@ test('parse version', (t) => {
   const cases = [
     ['0.0.0', new Version(0, 0, 0)],
     ['1.2.3', new Version(1, 2, 3)],
-    ['12.345.6789', new Version(12, 345, 6789)]
+    ['12.345.6789', new Version(12, 345, 6789)],
+
+    ['1.2.3-0', new Version(1, 2, 3, { prerelease: '0' })],
+    ['1.2.3-456', new Version(1, 2, 3, { prerelease: '456' })],
+    ['1.2.3-0abc', new Version(1, 2, 3, { prerelease: '0abc' })],
+    ['1.2.3-456abc', new Version(1, 2, 3, { prerelease: '456abc' })],
+    ['1.2.3-abc', new Version(1, 2, 3, { prerelease: 'abc' })]
   ]
 
   for (const [input, expected] of cases) {
@@ -17,7 +23,9 @@ test('parse invalid version', (t) => {
   const cases = [
     '01.2.3',
     '1.02.3',
-    '1.2.03'
+    '1.2.03',
+
+    '1.2.3-01'
   ]
 
   for (const input of cases) {
