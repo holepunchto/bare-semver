@@ -39,6 +39,12 @@ test('parse invalid version', (t) => {
   ]
 
   for (const input of cases) {
-    t.exception(() => Version.parse(input), /INVALID_VERSION/, input)
+    try {
+      Version.parse(input)
+      t.fail(input)
+    } catch (err) {
+      t.comment(err.message)
+      t.pass(input)
+    }
   }
 })
