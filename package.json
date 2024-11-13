@@ -5,8 +5,11 @@
   "exports": {
     ".": "./index.js",
     "./package": "./package.json",
+    "./constants": "./lib/constants.js",
     "./errors": "./lib/errors.js",
-    "./version": "./lib/version.js"
+    "./version": "./lib/version.js",
+    "./range": "./lib/range.js",
+    "./comparator": "./lib/comparator.js"
   },
   "files": [
     "index.js",
