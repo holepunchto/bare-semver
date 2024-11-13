@@ -151,3 +151,21 @@ test('compare version with prerelease', (t) => {
     t.alike(Version.compare(a, b), expected, `${a}, ${b}`)
   }
 })
+
+test('test range', (t) => {
+  const cases = [
+    [new Range([[new Comparator(LT, new Version(1, 2, 3))]]), [
+      [new Version(1, 2, 2), true],
+      [new Version(1, 2, 3), false],
+      [new Version(1, 2, 4), false]
+    ]]
+  ]
+
+  for (const [range, versions] of cases) {
+    t.comment(`${range}`)
+
+    for (const [version, expected] of versions) {
+      t.is(range.test(version), expected, `${version}, ${expected}`)
+    }
+  }
+})
