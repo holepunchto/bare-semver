@@ -11,7 +11,16 @@ test('parse version', (t) => {
     ['1.2.3-456', new Version(1, 2, 3, { prerelease: '456' })],
     ['1.2.3-0abc', new Version(1, 2, 3, { prerelease: '0abc' })],
     ['1.2.3-456abc', new Version(1, 2, 3, { prerelease: '456abc' })],
-    ['1.2.3-abc', new Version(1, 2, 3, { prerelease: 'abc' })]
+    ['1.2.3-abc', new Version(1, 2, 3, { prerelease: 'abc' })],
+
+    ['1.2.3+0', new Version(1, 2, 3, { build: '0' })],
+    ['1.2.3+01', new Version(1, 2, 3, { build: '01' })],
+    ['1.2.3+456', new Version(1, 2, 3, { build: '456' })],
+    ['1.2.3+0abc', new Version(1, 2, 3, { build: '0abc' })],
+    ['1.2.3+456abc', new Version(1, 2, 3, { build: '456abc' })],
+    ['1.2.3+abc', new Version(1, 2, 3, { build: 'abc' })],
+
+    ['1.2.3-456+abc', new Version(1, 2, 3, { prerelease: '456', build: 'abc' })]
   ]
 
   for (const [input, expected] of cases) {
@@ -25,6 +34,7 @@ test('parse invalid version', (t) => {
     '1.02.3',
     '1.2.03',
 
+    '1.2.3-',
     '1.2.3-01'
   ]
 
