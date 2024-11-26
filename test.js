@@ -7,7 +7,8 @@ test('parse version', (t) => {
   const cases = [
     ['0.0.0', new Version(0, 0, 0)],
     ['1.2.3', new Version(1, 2, 3)],
-    ['12.345.6789', new Version(12, 345, 6789)]
+    ['12.345.6789', new Version(12, 345, 6789)],
+    ['10.100.1000', new Version(10, 100, 1000)]
   ]
 
   for (const [input, expected] of cases) {
@@ -86,7 +87,8 @@ test('parse range', (t) => {
     ['<1.2.3', new Range([[new Comparator(LT, new Version(1, 2, 3))]])],
     ['<=1.2.3', new Range([[new Comparator(LTE, new Version(1, 2, 3))]])],
     ['>1.2.3', new Range([[new Comparator(GT, new Version(1, 2, 3))]])],
-    ['>=1.2.3', new Range([[new Comparator(GTE, new Version(1, 2, 3))]])]
+    ['>=1.2.3', new Range([[new Comparator(GTE, new Version(1, 2, 3))]])],
+    ['>1.10.0', new Range([[new Comparator(GT, new Version(1, 10, 0))]])]
   ]
 
   for (const [input, expected] of cases) {
