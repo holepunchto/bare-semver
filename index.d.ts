@@ -41,7 +41,7 @@ export namespace Version {
 export class Comparator {
   constructor(operator: number, version: Version)
 
-  operator: string
+  operator: number
   version: Version
 
   test(version: Version): boolean
