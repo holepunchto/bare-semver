@@ -1,6 +1,13 @@
 export const constants: { EQ: 1; LT: 2; LTE: 3; GT: 4; GTE: 5 }
 
-export const errors = class SemVerError extends Error {}
+export const errors = class SemVerError extends Error {
+  static INVALID_VERSION(
+    msg: string,
+    fn?: SemVerError.INVALID_VERSION
+  ): SemVerError
+
+  static INVALID_RANGE(msg: string, fn?: SemVerError.INVALID_RANGE): SemVerError
+}
 
 export function satisfies(version: Version, range: Range): boolean
 
