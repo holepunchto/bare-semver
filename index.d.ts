@@ -12,6 +12,12 @@ export class Version {
     opts?: { prerelease?: string[]; build?: string[] }
   )
 
+  major: number
+  minor: number
+  patch: number
+  prerealease: string[]
+  build: string[]
+
   compare(version: Version): boolean
 
   toString(): string
@@ -29,6 +35,9 @@ export namespace Version {
 export class Comparator {
   constructor(operator: number, version: Version)
 
+  operator: string
+  version: Version
+
   test(version: Version): boolean
 
   toString(): string
@@ -36,6 +45,8 @@ export class Comparator {
 
 export class Range {
   constructor(comparators?: Comparator[][])
+
+  comparators: Comparator[][]
 
   test(version: Version): boolean
 
