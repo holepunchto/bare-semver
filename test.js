@@ -92,6 +92,18 @@ test('parse range', (t) => {
   }
 })
 
+test('parse partial range', (t) => {
+  const cases = [
+    ['>=1', new Range([[new Comparator(GTE, new Version(1, 0, 0))]])],
+    ['>=1.2', new Range([[new Comparator(GTE, new Version(1, 2, 0))]])],
+    ['>=1.2.3', new Range([[new Comparator(GTE, new Version(1, 2, 3))]])]
+  ]
+
+  for (const [input, expected] of cases) {
+    t.alike(Range.parse(input), expected, input)
+  }
+})
+
 test('parse range set', (t) => {
   const cases = [
     [
