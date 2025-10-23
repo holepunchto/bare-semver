@@ -1,6 +1,6 @@
 {
   "name": "bare-semver",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Minimal semantic versioning library for Bare",
   "exports": {
     ".": {
