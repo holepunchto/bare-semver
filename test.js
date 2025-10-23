@@ -138,6 +138,24 @@ test('parse range comparator set', (t) => {
   }
 })
 
+test('parse partial range comparator set', (t) => {
+  const cases = [
+    [
+      '>1 <1.2',
+      new Range([
+        [
+          new Comparator(GT, new Version(1, 0, 0)),
+          new Comparator(LT, new Version(1, 2, 0))
+        ]
+      ])
+    ]
+  ]
+
+  for (const [input, expected] of cases) {
+    t.alike(Range.parse(input), expected, input)
+  }
+})
+
 test('compare version', (t) => {
   const cases = [
     [new Version(1, 2, 3), new Version(1, 2, 3), 0],
