@@ -30,10 +30,7 @@ export class Version {
 }
 
 export namespace Version {
-  export function parse(
-    input: string,
-    state?: { position: number; partial: boolean }
-  ): Version
+  export function parse(input: string): Version
 
   export function compare(a: Version, b: Version): number
 }
@@ -60,8 +57,5 @@ export class Range {
 }
 
 export namespace Range {
-  export function parse(
-    input: string,
-    state?: { position: number; partial: boolean }
-  ): Range
+  export function parse(input: string): Range
 }
