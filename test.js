@@ -50,12 +50,7 @@ test('parse version with build', (t) => {
 })
 
 test('parse version with prerelease and build', (t) => {
-  const cases = [
-    [
-      '1.2.3-456+abc',
-      new Version(1, 2, 3, { prerelease: ['456'], build: ['abc'] })
-    ]
-  ]
+  const cases = [['1.2.3-456+abc', new Version(1, 2, 3, { prerelease: ['456'], build: ['abc'] })]]
 
   for (const [input, expected] of cases) {
     t.alike(Version.parse(input), expected, input)
@@ -125,10 +120,7 @@ test('parse range comparator set', (t) => {
     [
       '>1.2.0 <1.2.3',
       new Range([
-        [
-          new Comparator(GT, new Version(1, 2, 0)),
-          new Comparator(LT, new Version(1, 2, 3))
-        ]
+        [new Comparator(GT, new Version(1, 2, 0)), new Comparator(LT, new Version(1, 2, 3))]
       ])
     ]
   ]
@@ -143,10 +135,7 @@ test('parse partial range comparator set', (t) => {
     [
       '>1 <1.2',
       new Range([
-        [
-          new Comparator(GT, new Version(1, 0, 0)),
-          new Comparator(LT, new Version(1, 2, 0))
-        ]
+        [new Comparator(GT, new Version(1, 0, 0)), new Comparator(LT, new Version(1, 2, 0))]
       ])
     ]
   ]
@@ -177,36 +166,16 @@ test('compare version', (t) => {
 
 test('compare version with prerelease', (t) => {
   const cases = [
-    [
-      new Version(1, 2, 3, { prerelease: ['a'] }),
-      new Version(1, 2, 3, { prerelease: ['a'] }),
-      0
-    ],
+    [new Version(1, 2, 3, { prerelease: ['a'] }), new Version(1, 2, 3, { prerelease: ['a'] }), 0],
 
     [new Version(1, 2, 3), new Version(1, 2, 3, { prerelease: ['a'] }), 1],
     [new Version(1, 2, 3, { prerelease: ['a'] }), new Version(1, 2, 3), -1],
 
-    [
-      new Version(1, 2, 3, { prerelease: ['a'] }),
-      new Version(1, 2, 3, { prerelease: ['1'] }),
-      1
-    ],
-    [
-      new Version(1, 2, 3, { prerelease: ['1'] }),
-      new Version(1, 2, 3, { prerelease: ['a'] }),
-      -1
-    ],
+    [new Version(1, 2, 3, { prerelease: ['a'] }), new Version(1, 2, 3, { prerelease: ['1'] }), 1],
+    [new Version(1, 2, 3, { prerelease: ['1'] }), new Version(1, 2, 3, { prerelease: ['a'] }), -1],
 
-    [
-      new Version(1, 2, 3, { prerelease: ['a.b'] }),
-      new Version(1, 2, 3, { prerelease: ['a'] }),
-      1
-    ],
-    [
-      new Version(1, 2, 3, { prerelease: ['a'] }),
-      new Version(1, 2, 3, { prerelease: ['a.b'] }),
-      -1
-    ]
+    [new Version(1, 2, 3, { prerelease: ['a.b'] }), new Version(1, 2, 3, { prerelease: ['a'] }), 1],
+    [new Version(1, 2, 3, { prerelease: ['a'] }), new Version(1, 2, 3, { prerelease: ['a.b'] }), -1]
   ]
 
   for (const [a, b, expected] of cases) {
