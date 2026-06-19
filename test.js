@@ -79,7 +79,10 @@ test('parse range', (t) => {
     ['<=1.2.3', new Range([[new Comparator(LTE, new Version(1, 2, 3))]])],
     ['>1.2.3', new Range([[new Comparator(GT, new Version(1, 2, 3))]])],
     ['>=1.2.3', new Range([[new Comparator(GTE, new Version(1, 2, 3))]])],
-    ['>1.10.0', new Range([[new Comparator(GT, new Version(1, 10, 0))]])]
+    ['>1.10.0', new Range([[new Comparator(GT, new Version(1, 10, 0))]])],
+    ['>= 1.2.3', new Range([[new Comparator(GTE, new Version(1, 2, 3))]])],
+    ['< 1.2.3', new Range([[new Comparator(LT, new Version(1, 2, 3))]])],
+    ['= 1.2.3', new Range([[new Comparator(EQ, new Version(1, 2, 3))]])]
   ]
 
   for (const [input, expected] of cases) {
@@ -119,6 +122,12 @@ test('parse range comparator set', (t) => {
   const cases = [
     [
       '>1.2.0 <1.2.3',
+      new Range([
+        [new Comparator(GT, new Version(1, 2, 0)), new Comparator(LT, new Version(1, 2, 3))]
+      ])
+    ],
+    [
+      '> 1.2.0 < 1.2.3',
       new Range([
         [new Comparator(GT, new Version(1, 2, 0)), new Comparator(LT, new Version(1, 2, 3))]
       ])
