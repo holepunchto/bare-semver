@@ -102,6 +102,346 @@ test('parse partial range', (t) => {
   }
 })
 
+test('parse caret range', (t) => {
+  const cases = [
+    [
+      '^1.2.3',
+      new Range([
+        [
+          new Comparator(GTE, new Version(1, 2, 3)),
+          new Comparator(LT, new Version(2, 0, 0, { prerelease: ['0'] }))
+        ]
+      ])
+    ],
+    [
+      '^0.2.3',
+      new Range([
+        [
+          new Comparator(GTE, new Version(0, 2, 3)),
+          new Comparator(LT, new Version(0, 3, 0, { prerelease: ['0'] }))
+        ]
+      ])
+    ],
+    [
+      '^0.0.3',
+      new Range([
+        [
+          new Comparator(GTE, new Version(0, 0, 3)),
+          new Comparator(LT, new Version(0, 0, 4, { prerelease: ['0'] }))
+        ]
+      ])
+    ],
+    [
+      '^1.2.3-beta.2',
+      new Range([
+        [
+          new Comparator(GTE, new Version(1, 2, 3, { prerelease: ['beta', '2'] })),
+          new Comparator(LT, new Version(2, 0, 0, { prerelease: ['0'] }))
+        ]
+      ])
+    ],
+    [
+      '^1.2.x',
+      new Range([
+        [
+          new Comparator(GTE, new Version(1, 2, 0)),
+          new Comparator(LT, new Version(2, 0, 0, { prerelease: ['0'] }))
+        ]
+      ])
+    ],
+    [
+      '^0.0.x',
+      new Range([
+        [
+          new Comparator(GTE, new Version(0, 0, 0)),
+          new Comparator(LT, new Version(0, 1, 0, { prerelease: ['0'] }))
+        ]
+      ])
+    ],
+    [
+      '^1.x',
+      new Range([
+        [
+          new Comparator(GTE, new Version(1, 0, 0)),
+          new Comparator(LT, new Version(2, 0, 0, { prerelease: ['0'] }))
+        ]
+      ])
+    ],
+    [
+      '^0.x',
+      new Range([
+        [
+          new Comparator(GTE, new Version(0, 0, 0)),
+          new Comparator(LT, new Version(1, 0, 0, { prerelease: ['0'] }))
+        ]
+      ])
+    ],
+    [
+      '^1',
+      new Range([
+        [
+          new Comparator(GTE, new Version(1, 0, 0)),
+          new Comparator(LT, new Version(2, 0, 0, { prerelease: ['0'] }))
+        ]
+      ])
+    ],
+    [
+      '^0',
+      new Range([
+        [
+          new Comparator(GTE, new Version(0, 0, 0)),
+          new Comparator(LT, new Version(1, 0, 0, { prerelease: ['0'] }))
+        ]
+      ])
+    ]
+  ]
+
+  for (const [input, expected] of cases) {
+    t.alike(Range.parse(input), expected, input)
+  }
+})
+
+test('parse tilde range', (t) => {
+  const cases = [
+    [
+      '~1.2.3',
+      new Range([
+        [
+          new Comparator(GTE, new Version(1, 2, 3)),
+          new Comparator(LT, new Version(1, 3, 0, { prerelease: ['0'] }))
+        ]
+      ])
+    ],
+    [
+      '~1.2',
+      new Range([
+        [
+          new Comparator(GTE, new Version(1, 2, 0)),
+          new Comparator(LT, new Version(1, 3, 0, { prerelease: ['0'] }))
+        ]
+      ])
+    ],
+    [
+      '~1',
+      new Range([
+        [
+          new Comparator(GTE, new Version(1, 0, 0)),
+          new Comparator(LT, new Version(2, 0, 0, { prerelease: ['0'] }))
+        ]
+      ])
+    ],
+    [
+      '~0.2.3',
+      new Range([
+        [
+          new Comparator(GTE, new Version(0, 2, 3)),
+          new Comparator(LT, new Version(0, 3, 0, { prerelease: ['0'] }))
+        ]
+      ])
+    ],
+    [
+      '~0',
+      new Range([
+        [
+          new Comparator(GTE, new Version(0, 0, 0)),
+          new Comparator(LT, new Version(1, 0, 0, { prerelease: ['0'] }))
+        ]
+      ])
+    ],
+    [
+      '~>1.2.3',
+      new Range([
+        [
+          new Comparator(GTE, new Version(1, 2, 3)),
+          new Comparator(LT, new Version(1, 3, 0, { prerelease: ['0'] }))
+        ]
+      ])
+    ]
+  ]
+
+  for (const [input, expected] of cases) {
+    t.alike(Range.parse(input), expected, input)
+  }
+})
+
+test('parse x-range', (t) => {
+  const cases = [
+    ['*', new Range([[new Comparator(GTE, new Version(0, 0, 0))]])],
+    ['x', new Range([[new Comparator(GTE, new Version(0, 0, 0))]])],
+    ['X', new Range([[new Comparator(GTE, new Version(0, 0, 0))]])],
+    [
+      '1.x',
+      new Range([
+        [
+          new Comparator(GTE, new Version(1, 0, 0)),
+          new Comparator(LT, new Version(2, 0, 0, { prerelease: ['0'] }))
+        ]
+      ])
+    ],
+    [
+      '1.2.x',
+      new Range([
+        [
+          new Comparator(GTE, new Version(1, 2, 0)),
+          new Comparator(LT, new Version(1, 3, 0, { prerelease: ['0'] }))
+        ]
+      ])
+    ],
+    [
+      '1',
+      new Range([
+        [
+          new Comparator(GTE, new Version(1, 0, 0)),
+          new Comparator(LT, new Version(2, 0, 0, { prerelease: ['0'] }))
+        ]
+      ])
+    ],
+    [
+      '1.2',
+      new Range([
+        [
+          new Comparator(GTE, new Version(1, 2, 0)),
+          new Comparator(LT, new Version(1, 3, 0, { prerelease: ['0'] }))
+        ]
+      ])
+    ]
+  ]
+
+  for (const [input, expected] of cases) {
+    t.alike(Range.parse(input), expected, input)
+  }
+})
+
+test('parse hyphen range', (t) => {
+  const cases = [
+    [
+      '1.2.3 - 2.3.4',
+      new Range([
+        [new Comparator(GTE, new Version(1, 2, 3)), new Comparator(LTE, new Version(2, 3, 4))]
+      ])
+    ],
+    [
+      '1.2 - 2.3.4',
+      new Range([
+        [new Comparator(GTE, new Version(1, 2, 0)), new Comparator(LTE, new Version(2, 3, 4))]
+      ])
+    ],
+    [
+      '1.2.3 - 2.3',
+      new Range([
+        [
+          new Comparator(GTE, new Version(1, 2, 3)),
+          new Comparator(LT, new Version(2, 4, 0, { prerelease: ['0'] }))
+        ]
+      ])
+    ],
+    [
+      '1.2.3 - 2',
+      new Range([
+        [
+          new Comparator(GTE, new Version(1, 2, 3)),
+          new Comparator(LT, new Version(3, 0, 0, { prerelease: ['0'] }))
+        ]
+      ])
+    ]
+  ]
+
+  for (const [input, expected] of cases) {
+    t.alike(Range.parse(input), expected, input)
+  }
+})
+
+test('test shorthand range', (t) => {
+  const cases = [
+    [
+      '^1.2.3',
+      [
+        [new Version(1, 2, 2), false],
+        [new Version(1, 2, 3), true],
+        [new Version(1, 9, 9), true],
+        [new Version(2, 0, 0), false],
+        [new Version(2, 0, 0, { prerelease: ['rc', '1'] }), false]
+      ]
+    ],
+    [
+      '~1.2.3',
+      [
+        [new Version(1, 2, 3), true],
+        [new Version(1, 2, 9), true],
+        [new Version(1, 3, 0), false]
+      ]
+    ],
+    [
+      '1.2.x',
+      [
+        [new Version(1, 1, 9), false],
+        [new Version(1, 2, 0), true],
+        [new Version(1, 2, 5), true],
+        [new Version(1, 3, 0), false]
+      ]
+    ],
+    [
+      '1.2.3 - 2.3.4',
+      [
+        [new Version(1, 2, 2), false],
+        [new Version(1, 2, 3), true],
+        [new Version(2, 3, 4), true],
+        [new Version(2, 3, 5), false]
+      ]
+    ]
+  ]
+
+  for (const [input, versions] of cases) {
+    const range = Range.parse(input)
+
+    t.comment(`${range}`)
+
+    for (const [version, expected] of versions) {
+      t.is(range.test(version), expected, `${version}, ${expected}`)
+    }
+  }
+})
+
+test('test range with prerelease', (t) => {
+  const cases = [
+    [
+      '~1.2.3-beta.2',
+      [
+        // A prerelease of the opted-into version is allowed if it is greater
+        // than or equal to the comparator's prerelease.
+        [new Version(1, 2, 3, { prerelease: ['beta', '2'] }), true],
+        [new Version(1, 2, 3, { prerelease: ['beta', '4'] }), true],
+        [new Version(1, 2, 3, { prerelease: ['beta', '1'] }), false],
+        // A prerelease of a different version is never allowed, even when it
+        // falls within the range numerically.
+        [new Version(1, 2, 4, { prerelease: ['beta', '2'] }), false],
+        // Stable versions within the range are allowed as usual.
+        [new Version(1, 2, 3), true],
+        [new Version(1, 2, 9), true]
+      ]
+    ],
+    [
+      '^1.2.3',
+      [
+        // The range opts into no prereleases, so none are allowed.
+        [new Version(1, 5, 0, { prerelease: ['beta'] }), false],
+        [new Version(2, 0, 0, { prerelease: ['rc', '1'] }), false],
+        [new Version(1, 5, 0), true]
+      ]
+    ]
+  ]
+
+  for (const [input, versions] of cases) {
+    const range = Range.parse(input)
+
+    t.comment(`${range}`)
+
+    for (const [version, expected] of versions) {
+      t.is(range.test(version), expected, `${version}, ${expected}`)
+    }
+  }
+})
+
 test('parse range set', (t) => {
   const cases = [
     [
